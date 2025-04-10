@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
+import Filtro from '../filtros';
 
 function Listar() {
   const [data, setData] = useState([]);
@@ -24,9 +25,30 @@ function Listar() {
 
     obtenerDatos();
   }, [tipoSeleccionado]);
+  const handleTipoChange = (tipo) => {
+    setTipoSeleccionado(tipo);
+  };
+
+  let resultados = data;
+
+  if (busqueda.length >= 3 && isNaN(busqueda)) {
+    resultados = data.filter(pokemon =>
+      pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+    );
+  }
+
 
   return (
     <>
+    <input
+        type="text"
+        placeholder="Buscar Pokémon"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        className="c-buscador"
+      />
+    <Filtro onTipoChange={handleTipoChange} />
+   
       <section className='c-lista'>
         {data.map((pokemon, index) => (
           <div className='c-lista-pokemon'
@@ -45,3 +67,6 @@ function Listar() {
 }
 
 export default Listar;
+
+
+let resultados = data;
